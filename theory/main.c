@@ -17,7 +17,7 @@ int	main(void)
     printf("Timezone: %d minutes west of UTC\n", tz.tz_minuteswest);
     printf("Daylight savings time: %d\n", tz.tz_dsttime);
 
-	// usleep(5000000);
+	usleep(5000000);
 	printf("HOLA\n");
 	return (0);
 }
