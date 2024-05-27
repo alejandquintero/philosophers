@@ -1,0 +1,16 @@
+// init_simulation();
+int	i = 0;
+while (i < params.number_of_philos)
+{
+	printf("%d\n", philos[i].id);
+	printf("%d\n", philos[i].is_dead);
+	printf("%d\n", philos[i].is_eating);
+	printf("%d\n", philos[i].meals_count);
+	printf("r %p\n", philos[i].r_fork);
+	printf("l %p\n", philos[i].l_fork);
+	printf("%p\n", philos[i].dead_mutex);
+	printf("%p\n", philos[i].log_mutex);
+	printf("%p\n", philos[i].meal_mutex);
+	printf("=====================\n");
+	i++;
+}

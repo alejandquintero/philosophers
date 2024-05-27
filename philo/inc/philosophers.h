@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/25 23:13:10 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:58:19 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,17 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-
 typedef struct s_params
 {
-	int	number_of_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_meals;
+	int				number_of_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_meals;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	log_mutex;
+	pthread_mutex_t	meal_mutex;
 }	t_params;
 
 typedef struct s_philo
@@ -55,16 +58,10 @@ typedef struct s_philo
 	t_params		*t_params;
 }	t_philo;
 
-typedef struct s_program
-{
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	dead_mutex;
-	pthread_mutex_t	log_mutex;
-	pthread_mutex_t	meal_mutex;
-}	t_program;
-
-void	print(char *msg);
 int		ft_sleep(size_t ms);
 size_t	get_current_time(void);
-
+bool	init_forks(t_params *params);
+bool	init_mutex_flags(t_params *params);
+void	init_philos(t_params *params, t_philo *philos);
+void	destroy_and_free(t_params *params, t_philo *philo);
 #endif
