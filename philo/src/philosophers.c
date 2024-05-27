@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/24 21:50:11 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/05/25 23:14:47 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ bool	get_input(char *argv[], t_params *params)
 
 int	main(int argc, char *argv[])
 {
-	t_params params;
+	t_params 	params;
+	size_t		start_time;
 
 	if (argc != REQUIRED_ARGUMENTS && argc != OPTIONAL_ARGUMENTS)
 		return (printf("Invalid arguments\n"), 1);
@@ -95,6 +96,17 @@ int	main(int argc, char *argv[])
 			params.time_to_sleep,
 			params.number_of_meals
 		);
+	
+		start_time = get_current_time();
+			// printf("start time %ld\n",start_time);
+
+		printf("start\n");
+		while (1)
+		{
+			// printf("%ld\n", get_current_time());
+			ft_sleep(params.time_to_die);
+			printf("%s%ld\n", CYAN, get_current_time() - start_time);
+		}
 	}
 	return (0);
 }
