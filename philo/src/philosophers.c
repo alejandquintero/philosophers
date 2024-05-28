@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/27 22:59:01 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:57:48 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ bool	get_input(char *argv[], t_params *params)
 
 int	main(int argc, char *argv[])
 {
-	t_philo		*philos;
-	t_params	params;
+	t_philo			*philos;
+	t_params		params;
+	t_supervisor 	supervisor;
 
 	philos = NULL;
 	if (argc != REQUIRED_ARGUMENTS && argc != OPTIONAL_ARGUMENTS)
@@ -102,6 +103,8 @@ int	main(int argc, char *argv[])
 		if (!philos)
 			return (destroy_and_free(&params, NULL), 1);
 		init_philos(&params, philos);
+		init_supervisor(&supervisor, philos);
+		init_simulation(philos, &params, &supervisor);
 	}
 	destroy_and_free(&params, philos);
 	return (0);

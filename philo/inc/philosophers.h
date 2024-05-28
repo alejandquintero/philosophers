@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/27 22:58:19 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:57:39 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@
 # include <limits.h>
 # include <sys/time.h>
 # include <unistd.h>
+
+typedef struct s_supervisor
+{
+	pthread_t	thread;
+	t_params	*params;
+	t_philo		*philos;
+} t_supervisor;
 
 typedef struct s_params
 {
@@ -55,7 +62,7 @@ typedef struct s_philo
 	pthread_mutex_t	*dead_mutex;
 	pthread_mutex_t	*log_mutex;
 	pthread_mutex_t	*meal_mutex;
-	t_params		*t_params;
+	t_params		*params;
 }	t_philo;
 
 int		ft_sleep(size_t ms);
@@ -64,4 +71,7 @@ bool	init_forks(t_params *params);
 bool	init_mutex_flags(t_params *params);
 void	init_philos(t_params *params, t_philo *philos);
 void	destroy_and_free(t_params *params, t_philo *philo);
+bool	init_simulation(t_philo *philos, t_params *p, t_supervisor *s);
+void	init_supervisor(t_supervisor *supervisor, t_philo *philos);
+
 #endif

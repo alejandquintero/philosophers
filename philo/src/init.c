@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:32:51 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/27 22:56:07 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/05/28 21:53:35 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,13 @@ void	init_philos(t_params *params, t_philo *philos)
 		philos[i].dead_mutex = &params->dead_mutex;
 		philos[i].log_mutex = &params->log_mutex;
 		philos[i].meal_mutex = &params->meal_mutex;
-		philos[i].t_params = params;
+		philos[i].params = params;
 		i++;
 	}
+}
+
+void	init_supervisor(t_supervisor *supervisor, t_philo *philos)
+{
+	supervisor->philos = philos;
+	supervisor->params = philos[0].params;
 }
