@@ -1,51 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/28 21:57:48 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:37:09 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-
-long	ft_stol(const char *str)
-{
-	int		i;
-	int		sign;
-	long	num;
-
-	i = 0;
-	num = 0;
-	sign = 1;
-	if (str[i] == '-')
-		sign = -1;
-	if (str[i] == '-')
-		i++;
-	while (str[i])
-	{
-		num = (num * 10) + (str[i] - 48);
-		i++;
-	}
-	return (num * sign);
-}
-
-bool	is_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] < 48 || str[i] > 58)
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 bool	valid_input(char *argv[])
 {
@@ -71,6 +36,7 @@ bool	get_input(char *argv[], t_params *params)
 {
 	if (!valid_input(argv))
 		return (false);
+	params->routine_active = true;
 	params->number_of_philos = (int)ft_stol(argv[1]);
 	params->time_to_die = (int)ft_stol(argv[2]);
 	params->time_to_eat = (int)ft_stol(argv[3]);
@@ -84,27 +50,18 @@ bool	get_input(char *argv[], t_params *params)
 
 int	main(int argc, char *argv[])
 {
-	t_philo			*philos;
-	t_params		params;
-	t_supervisor 	supervisor;
+	t_philo 	*philos;
+	t_params	params;
 
-	philos = NULL;
 	if (argc != REQUIRED_ARGUMENTS && argc != OPTIONAL_ARGUMENTS)
 		return (printf("Invalid arguments\n"), 1);
 	if (!get_input(argv, &params))
 		return (1);
 	else
 	{
-		if (!init_forks(&params))
+		if (!init(&params, &philos))
 			return (1);
-		if (!init_mutex_flags(&params))
-			return (1);
-		philos = malloc(params.number_of_philos * sizeof(t_philo));
-		if (!philos)
-			return (destroy_and_free(&params, NULL), 1);
-		init_philos(&params, philos);
-		init_supervisor(&supervisor, philos);
-		init_simulation(philos, &params, &supervisor);
+		init_threads(philos, &params);
 	}
 	destroy_and_free(&params, philos);
 	return (0);

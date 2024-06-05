@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/28 21:57:39 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:40:53 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,19 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-typedef struct s_supervisor
-{
-	pthread_t	thread;
-	t_params	*params;
-	t_philo		*philos;
-} t_supervisor;
 
 typedef struct s_params
 {
+	int				routine_active;
+	int				dead_flag;
+	int				all_eat;
 	int				number_of_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_meals;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	routine_mutex;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	meal_mutex;
 }	t_params;
@@ -53,25 +50,29 @@ typedef struct s_philo
 	pthread_t		thread;
 	int				id;
 	int				last_meal_time;
-	int				start_time;
-	int				is_dead;
+	size_t			start_time;
+	int				is_dead; // ?
 	int				is_eating;
 	int				meals_count;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	*dead_mutex;
-	pthread_mutex_t	*log_mutex;
-	pthread_mutex_t	*meal_mutex;
+	pthread_mutex_t	*routine_mutex; // para el flag de dead_flag
+	pthread_mutex_t	*log_mutex; // para printf
+	pthread_mutex_t	*meal_mutex; // para cuando este comiendo y necesite consulta el numero de comidas
 	t_params		*params;
 }	t_philo;
 
-int		ft_sleep(size_t ms);
+int		own_usleep(size_t ms);
 size_t	get_current_time(void);
 bool	init_forks(t_params *params);
 bool	init_mutex_flags(t_params *params);
 void	init_philos(t_params *params, t_philo *philos);
 void	destroy_and_free(t_params *params, t_philo *philo);
-bool	init_simulation(t_philo *philos, t_params *p, t_supervisor *s);
-void	init_supervisor(t_supervisor *supervisor, t_philo *philos);
+bool	init_threads(t_philo *philos, t_params *p);
+long	ft_stol(const char *str);
+bool	init(t_params *params, t_philo **philos);
+bool	is_digit(char *str);
+void 	print(char *msg, t_philo *philo, char *color);
+
 
 #endif

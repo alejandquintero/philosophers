@@ -6,13 +6,20 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/05/27 22:57:40 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:41:09 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-int	ft_sleep(size_t ms)
+void print(char *msg, t_philo *philo, char *color)
+{
+	pthread_mutex_lock(philo->log_mutex);
+	printf("%s %zu %d %s\n", color, get_current_time() - philo->start_time, philo->id, msg);
+	pthread_mutex_unlock(philo->log_mutex);
+}
+
+int	own_usleep(size_t ms)
 {
 	size_t	start_time;
 
@@ -34,26 +41,37 @@ size_t	get_current_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	destroy_and_free(t_params *params, t_philo *philo)
+long	ft_stol(const char *str)
+{
+	int		i;
+	int		sign;
+	long	num;
+
+	i = 0;
+	num = 0;
+	sign = 1;
+	if (str[i] == '-')
+		sign = -1;
+	if (str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		num = (num * 10) + (str[i] - 48);
+		i++;
+	}
+	return (num * sign);
+}
+
+bool	is_digit(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (params)
+	while (str[i] != '\0')
 	{
-		if (params->forks)
-		{
-			while (i < params->number_of_philos)
-			{
-				pthread_mutex_destroy(&params->forks[i]);
-				i++;
-			}
-			free(params->forks);
-		}
-		pthread_mutex_destroy(&params->dead_mutex);
-		pthread_mutex_destroy(&params->log_mutex);
-		pthread_mutex_destroy(&params->meal_mutex);
+		if (str[i] < 48 || str[i] > 58)
+			return (false);
+		i++;
 	}
-	if (philo)
-		free(philo);
+	return (true);
 }
