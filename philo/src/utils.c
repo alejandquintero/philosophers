@@ -6,22 +6,28 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 17:12:19 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:59:30 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-void print(char *msg, t_philo *philo, char *color)
+void	print(char *msg, t_philo *philo, char *color)
 {
-	pthread_mutex_lock(philo->stop_mutex);	
+	pthread_mutex_lock(philo->stop_mutex);
 	if (!philo->params->stop)
 	{
 		pthread_mutex_lock(philo->log_mutex);
-		printf("%s %zu %d %s\n", color, get_current_time() - philo->start_time, philo->id, msg);
+		printf(
+			"%s %zu %d %s\n",
+			color,
+			get_current_time() - philo->start_time,
+			philo->id,
+			msg
+			);
 		pthread_mutex_unlock(philo->log_mutex);
 	}
-	pthread_mutex_unlock(philo->stop_mutex);	
+	pthread_mutex_unlock(philo->stop_mutex);
 }
 
 int	own_usleep(size_t ms)

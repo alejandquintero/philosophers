@@ -6,25 +6,23 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:32:51 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/08 17:42:59 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:57:55 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-//eat, sleep, think
-
 bool	init_forks(t_params *params)
 {
 	int	i;
 
+	i = 0;
 	params->forks = malloc(params->number_of_philos * sizeof(pthread_mutex_t));
 	if (!params->forks)
 	{
 		printf("Something was wrong\n");
 		return (false);
 	}
-	i = 0;
 	while (i < params->number_of_philos)
 	{
 		if (pthread_mutex_init(&params->forks[i], NULL) != 0)
@@ -90,9 +88,9 @@ bool	init(t_params *params, t_philo **philos)
 {
 	*philos = NULL;
 	if (!init_forks(params))
-			return (false);
+		return (false);
 	if (!init_mutex_flags(params))
-			return (false);
+		return (false);
 	*philos = malloc(params->number_of_philos * sizeof(t_philo));
 	if (!*philos)
 	{

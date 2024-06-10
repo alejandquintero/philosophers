@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 17:46:32 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 22:06:21 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define GREEN "\e[0;92m"
 # define YELLOW "\e[0;93m"
 # define CYAN "\e[0;96m"
+# define MAGENTA "\e[0;95m"
 # define WHITE ""
 
 # include <stdlib.h>
@@ -28,7 +29,6 @@
 # include <limits.h>
 # include <sys/time.h>
 # include <unistd.h>
-
 
 typedef struct s_params
 {
@@ -55,9 +55,9 @@ typedef struct s_philo
 	int				meals_count;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	*stop_mutex; // Relacionado con parmetro para dejar de repetir rutina
-	pthread_mutex_t	*log_mutex; // Relacionado con print
-	pthread_mutex_t	*meal_mutex; // Relacionado con campos de comida
+	pthread_mutex_t	*stop_mutex;
+	pthread_mutex_t	*log_mutex;
+	pthread_mutex_t	*meal_mutex;
 	t_params		*params;
 }	t_philo;
 
@@ -71,7 +71,11 @@ bool	init_threads(t_philo *philos, t_params *p);
 long	ft_stol(const char *str);
 bool	init(t_params *params, t_philo **philos);
 bool	is_digit(char *str);
-void 	print(char *msg, t_philo *philo, char *color);
-
+void	print(char *msg, t_philo *philo, char *color);
+void	eat(t_philo *philo);
+void	nap(t_philo *philo);
+void	think(t_philo *philo);
+bool	a_philosopher_is_dead(t_philo *philos);
+bool	all_the_philosophers_ate(t_philo *philos);
 
 #endif

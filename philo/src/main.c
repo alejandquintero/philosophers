@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/07 10:36:22 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 22:05:38 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	get_input(char *argv[], t_params *params)
 
 int	main(int argc, char *argv[])
 {
-	t_philo 	*philos;
+	t_philo		*philos;
 	t_params	params;
 
 	if (argc != REQUIRED_ARGUMENTS && argc != OPTIONAL_ARGUMENTS)
