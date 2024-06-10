@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/08 17:41:18 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:12:19 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	own_usleep(size_t ms)
 	start_time = get_current_time();
 	while ((get_current_time() - start_time) < ms)
 	{
-		if (usleep(500) == -1)
+		if (usleep(50) == -1)
 			printf("usleep error!\n");
 	}
 	return (0);

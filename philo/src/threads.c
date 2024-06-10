@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 20:32:39 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/08 17:42:52 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:48:18 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	think(t_philo *philo)
 void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
-	print("has taken a fork", philo, CYAN);
+	print("has taken a fork", philo, GREEN);
 	if (philo->params->number_of_philos == 1)
 	{
 		pthread_mutex_unlock(philo->l_fork);
@@ -90,7 +90,7 @@ void	eat(t_philo *philo)
 		return;
 	}
 	pthread_mutex_lock(philo->r_fork);
-	print("has taken a fork", philo, CYAN);
+	print("has taken a fork", philo, GREEN);
 	print("is eating", philo, YELLOW);
 	pthread_mutex_lock(philo->meal_mutex);
 	philo->is_eating = 1;
@@ -135,7 +135,7 @@ void	*philo_routine(void *p)
 	t_philo *philo;
 	philo = (t_philo *)p;
 	if (philo->id % 2 != 0)
-		own_usleep(1);
+		own_usleep(10);
 	while (loop(philo))
 	{
 		eat(philo);
