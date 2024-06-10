@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:32:51 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/05 20:52:15 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:42:59 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	init_forks(t_params *params)
 
 bool	init_mutex_flags(t_params *params)
 {
-	if (pthread_mutex_init(&params->routine_mutex, NULL) != 0)
+	if (pthread_mutex_init(&params->stop_mutex, NULL) != 0)
 	{
 		printf("Something was wrong\n");
 		destroy_and_free(params, NULL);
@@ -69,7 +69,6 @@ void	init_philos(t_params *params, t_philo *philos)
 	while (i < params->number_of_philos)
 	{
 		philos[i].id = i + 1;
-		philos[i].is_dead = 0;
 		philos[i].is_eating = 0;
 		philos[i].meals_count = 0;
 		philos[i].r_fork = &params->forks[i];
@@ -78,7 +77,8 @@ void	init_philos(t_params *params, t_philo *philos)
 		else
 			philos[i].l_fork = &params->forks[i - 1];
 		philos[i].start_time = get_current_time();
-		philos[i].routine_mutex = &params->routine_mutex;
+		philos[i].last_meal_time = get_current_time();
+		philos[i].stop_mutex = &params->stop_mutex;
 		philos[i].log_mutex = &params->log_mutex;
 		philos[i].meal_mutex = &params->meal_mutex;
 		philos[i].params = params;

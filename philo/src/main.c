@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/05 20:37:09 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:36:22 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	get_input(char *argv[], t_params *params)
 {
 	if (!valid_input(argv))
 		return (false);
-	params->routine_active = true;
+	params->stop = false;
 	params->number_of_philos = (int)ft_stol(argv[1]);
 	params->time_to_die = (int)ft_stol(argv[2]);
 	params->time_to_eat = (int)ft_stol(argv[3]);

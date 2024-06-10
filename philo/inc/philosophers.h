@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/05 21:40:53 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:40:37 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define GREEN "\e[0;92m"
 # define YELLOW "\e[0;93m"
 # define CYAN "\e[0;96m"
+# define WHITE ""
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -31,16 +32,14 @@
 
 typedef struct s_params
 {
-	int				routine_active;
-	int				dead_flag;
-	int				all_eat;
+	int				stop;
 	int				number_of_philos;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
 	int				number_of_meals;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	routine_mutex;
+	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	meal_mutex;
 }	t_params;
@@ -49,16 +48,16 @@ typedef struct s_philo
 {
 	pthread_t		thread;
 	int				id;
-	int				last_meal_time;
+	size_t			last_meal_time;
 	size_t			start_time;
-	int				is_dead; // ?
 	int				is_eating;
+	bool			is_dead;
 	int				meals_count;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	*routine_mutex; // para el flag de dead_flag
-	pthread_mutex_t	*log_mutex; // para printf
-	pthread_mutex_t	*meal_mutex; // para cuando este comiendo y necesite consulta el numero de comidas
+	pthread_mutex_t	*stop_mutex; // Relacionado con parmetro para dejar de repetir rutina
+	pthread_mutex_t	*log_mutex; // Relacionado con print
+	pthread_mutex_t	*meal_mutex; // Relacionado con campos de comida
 	t_params		*params;
 }	t_philo;
 
