@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 20:32:39 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 21:55:34 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:06:58 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	*philo_routine(void *p)
 
 	philo = (t_philo *)p;
 	if (philo->id % 2 != 0)
-		own_usleep(2);
+		own_usleep(philo->params->time_to_eat - 10);
 	while (loop(philo))
 	{
 		eat(philo);
