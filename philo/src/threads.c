@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 20:32:39 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/15 17:34:36 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/17 23:06:06 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*supervisor_routine(void *p)
 			if (all_the_philosophers_ate(philos))
 				return (NULL);
 		}
-		usleep(1000);
+		ft_usleep(.5);
 	}
 	return (NULL);
 }
@@ -49,12 +49,15 @@ void	*philo_routine(void *p)
 
 	philo = (t_philo *)p;
 	if (philo->id % 2 != 0)
-		own_usleep(philo->params->time_to_eat - 10);
+		ft_usleep(philo->params->time_to_eat - 10);
 	while (loop(philo))
 	{
-		eat(philo);
-		nap(philo);
-		think(philo);
+		if (!eat(philo))
+			break;
+		if (!nap(philo))
+			break;
+		if (!think(philo))
+			break;
 	}
 	return (NULL);
 }

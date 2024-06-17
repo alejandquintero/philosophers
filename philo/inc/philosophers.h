@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 22:06:21 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:39:34 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ typedef struct s_philo
 {
 	pthread_t		thread;
 	int				id;
+	int				is_eating;
+	int				meals_count;
 	size_t			last_meal_time;
 	size_t			start_time;
-	int				is_eating;
-	bool			is_dead;
-	int				meals_count;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*stop_mutex;
@@ -61,21 +60,22 @@ typedef struct s_philo
 	t_params		*params;
 }	t_philo;
 
-int		own_usleep(size_t ms);
+void	init_philos(t_params *params, t_philo *philos);
+void	destroy_and_free(t_params *params, t_philo *philo);
+void	print(char *msg, t_philo *philo, char *color);
+int		ft_usleep(size_t ms);
+long	ft_stol(const char *str);
 size_t	get_current_time(void);
 bool	init_forks(t_params *params);
 bool	init_mutex_flags(t_params *params);
-void	init_philos(t_params *params, t_philo *philos);
-void	destroy_and_free(t_params *params, t_philo *philo);
 bool	init_threads(t_philo *philos, t_params *p);
-long	ft_stol(const char *str);
 bool	init(t_params *params, t_philo **philos);
 bool	is_digit(char *str);
-void	print(char *msg, t_philo *philo, char *color);
-void	eat(t_philo *philo);
-void	nap(t_philo *philo);
-void	think(t_philo *philo);
+bool	eat(t_philo *philo);
+bool	nap(t_philo *philo);
+bool	think(t_philo *philo);
 bool	a_philosopher_is_dead(t_philo *philos);
 bool	all_the_philosophers_ate(t_philo *philos);
+bool	stop(t_params *params);
 
 #endif

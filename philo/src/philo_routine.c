@@ -6,24 +6,55 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:50:59 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/15 16:28:51 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:50:56 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-bool	take_forks(t_philo *philo)
+void	drop_left_fork(t_philo *philo)
 {
+	pthread_mutex_unlock(philo->l_fork);
+}
+
+void	drop_right_fork(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->r_fork);
+}
+
+bool	take_left_fork(t_philo *philo)
+{
+	if (stop(philo->params))
+		return (false);
 	pthread_mutex_lock(philo->l_fork);
 	print("has taken a fork", philo, GREEN);
-	if (philo->params->number_of_philos == 1)
-	{
-		pthread_mutex_unlock(philo->l_fork);
-		own_usleep(philo->params->time_to_die);
+	return (true);
+}
+
+bool	take_right_fork(t_philo *philo)
+{
+	if (stop(philo->params))
 		return (false);
-	}
 	pthread_mutex_lock(philo->r_fork);
 	print("has taken a fork", philo, GREEN);
+	return (true);
+}
+
+bool	take_forks(t_philo *philo)
+{
+	if (!take_left_fork(philo))
+		return (false);
+	if (philo->params->number_of_philos == 1)
+	{
+		drop_left_fork(philo);
+		ft_usleep(philo->params->time_to_die);
+		return (false);
+	}
+	if (!take_right_fork(philo))
+	{
+		drop_left_fork(philo);
+		return (false);
+	}
 	return (true);
 }
 
@@ -33,32 +64,38 @@ void	drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 }
 
-void	eat(t_philo *philo)
+bool	eat(t_philo *philo)
 {
-	if (take_forks(philo))
-	{
-		print("is eating", philo, YELLOW);
-		pthread_mutex_lock(philo->meal_mutex);
-		philo->is_eating = 1;
-		philo->last_meal_time = get_current_time();
-		philo->meals_count++;
-		pthread_mutex_unlock(philo->meal_mutex);
-		own_usleep(philo->params->time_to_eat);
-		pthread_mutex_lock(philo->meal_mutex);
-		philo->is_eating = 0;
-		pthread_mutex_unlock(philo->meal_mutex);
-		drop_forks(philo);
-	}
-	return ;
+	if (!take_forks(philo))
+		return (false);
+	print("is eating", philo, YELLOW);
+	pthread_mutex_lock(philo->meal_mutex);
+	philo->is_eating = 1;
+	philo->last_meal_time = get_current_time();
+	philo->meals_count++;
+	pthread_mutex_unlock(philo->meal_mutex);
+	ft_usleep(philo->params->time_to_eat);
+	pthread_mutex_lock(philo->meal_mutex);
+	philo->is_eating = 0;
+	pthread_mutex_unlock(philo->meal_mutex);
+	drop_left_fork(philo);
+	drop_right_fork(philo);
+	return (true);
 }
 
-void	nap(t_philo *philo)
+bool	nap(t_philo *philo)
 {
+	if (stop(philo->params))
+		return (false);
 	print("is sleeping", philo, CYAN);
-	own_usleep(philo->params->time_to_sleep);
+	ft_usleep(philo->params->time_to_sleep);
+	return (true);
 }
 
-void	think(t_philo *philo)
+bool	think(t_philo *philo)
 {
+	if (stop(philo->params))
+		return (false);
 	print("is thinking", philo, MAGENTA);
+	return (true);
 }

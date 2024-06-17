@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/15 17:28:02 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:21:28 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,28 @@
 
 void	print(char *msg, t_philo *philo, char *color)
 {
-	pthread_mutex_lock(philo->stop_mutex);
-	if (!philo->params->stop)
+	pthread_mutex_lock(philo->log_mutex);
+	if (!stop(philo->params))
 	{
-		pthread_mutex_lock(philo->log_mutex);
 		printf(
-			"%s %zu %d %s\n",
+			"%s %09zu %d %s\n",
 			color,
 			get_current_time() - philo->start_time,
 			philo->id,
 			msg
 			);
-		pthread_mutex_unlock(philo->log_mutex);
 	}
-	pthread_mutex_unlock(philo->stop_mutex);
+	pthread_mutex_unlock(philo->log_mutex);
 }
 
-int	own_usleep(size_t ms)
+int	ft_usleep(size_t ms)
 {
 	size_t	start_time;
 
 	start_time = get_current_time();
 	while ((get_current_time() - start_time) < ms)
 	{
-		if (usleep(500) == -1)
+		if (usleep(50) == -1)
 			printf("usleep error!\n");
 	}
 	return (0);

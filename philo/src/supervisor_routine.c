@@ -6,11 +6,22 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:52:15 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/15 17:32:51 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:35:15 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+
+bool	stop(t_params *params)
+{
+	bool	stop;
+
+	stop = false;
+	pthread_mutex_lock(&params->stop_mutex);
+	stop = params->stop;
+	pthread_mutex_unlock(&params->stop_mutex);
+	return (stop);
+}
 
 bool	check_meals(t_philo *philo)
 {
@@ -59,11 +70,16 @@ bool	check_dead_philo(t_philo *philo)
 		is_dead = true;
 	pthread_mutex_unlock(philo->meal_mutex);
 	if (is_dead)
-	{
-		print("died", philo, RED);
+	{	
+		
 		pthread_mutex_lock(philo->stop_mutex);
 		philo->params->stop = true;
 		pthread_mutex_unlock(philo->stop_mutex);
+
+		pthread_mutex_lock(philo->log_mutex);		
+		printf("%s %09zu %d died\n", RED, get_current_time() - philo->start_time, philo->id);
+		pthread_mutex_unlock(philo->log_mutex);
+
 		return (true);
 	}
 	return (false);
