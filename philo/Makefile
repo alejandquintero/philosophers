@@ -6,7 +6,7 @@
 #    By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/23 20:51:21 by aquinter          #+#    #+#              #
-#    Updated: 2024/06/18 21:19:27 by aquinter         ###   ########.fr        #
+#    Updated: 2024/06/19 00:04:15 by aquinter         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 CC = gcc
 
-CFLAGS = -Wextra -Werror -Wall -fsanitize=address
+CFLAGS = -Wextra -Werror -Wall -pthread #-fsanitize=thread
 IFLAGS = -I$(INC_DIR)
 
 OBJ_DIR = obj/

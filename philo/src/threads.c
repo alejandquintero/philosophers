@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 20:32:39 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 21:17:06 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/19 00:10:36 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*supervisor_routine(void *p)
 			if (all_philosophers_ate(philos))
 				return (NULL);
 		}
-		ft_usleep((size_t).5);
+		ft_usleep(.5);
 	}
 	return (NULL);
 }

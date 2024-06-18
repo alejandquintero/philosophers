@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:50:59 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 20:54:20 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 23:50:36 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,50 @@ bool	take_right_fork(t_philo *philo)
 	return (true);
 }
 
+bool	handle_one_philo(t_philo *philo)
+{
+	take_left_fork(philo);
+	drop_left_fork(philo);
+	ft_usleep(philo->params->time_to_die);
+	return (false);
+}
+
 bool	take_forks(t_philo *philo)
 {
-	if (!take_left_fork(philo))
-		return (false);
 	if (philo->params->number_of_philos == 1)
+		return (handle_one_philo(philo));
+	if (philo->id % 2 != 0)
 	{
-		drop_left_fork(philo);
-		ft_usleep(philo->params->time_to_die);
-		return (false);
+		if (!take_left_fork(philo))
+			return (false);
+		if (!take_right_fork(philo))
+		{
+			drop_left_fork(philo);
+			return (false);
+		}	
 	}
-	if (!take_right_fork(philo))
+	else
 	{
-		drop_left_fork(philo);
-		return (false);
+		if (!take_right_fork(philo))
+			return (false);
+		if (!take_left_fork(philo))
+		{
+			drop_right_fork(philo);
+			return (false);
+		}	
 	}
 	return (true);
 }
 
 void	drop_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2 != 0){
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}else{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
 }
 
 bool	eat(t_philo *philo)
@@ -78,8 +100,7 @@ bool	eat(t_philo *philo)
 	pthread_mutex_lock(philo->meal_mutex);
 	philo->is_eating = 0;
 	pthread_mutex_unlock(philo->meal_mutex);
-	drop_left_fork(philo);
-	drop_right_fork(philo);
+	drop_forks(philo);
 	return (true);
 }
 

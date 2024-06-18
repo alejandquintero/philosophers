@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:11:46 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 21:16:22 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 23:58:31 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define INVALID_MEALS "Invalid number of times each philosopher must eat\n"
 # define NO_MEAL_LIMIT -1
 # define ERROR 1
-# define SUCCESS 1
+# define SUCCESS 0
 
 # define RED "\e[0;91m"
 # define GREEN "\e[0;92m"

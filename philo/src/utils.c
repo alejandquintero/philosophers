@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 21:14:12 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:23:43 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print(char *msg, t_philo *philo, char *color)
 	if (!stop(philo->params))
 	{
 		printf(
-			"%s %09llu %d %s\n",
+			"%s %09lu %d %s\n",
 			color,
 			get_current_time() - philo->start_time,
 			philo->id,
