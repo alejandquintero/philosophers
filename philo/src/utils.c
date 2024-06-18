@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/17 21:21:28 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:14:12 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print(char *msg, t_philo *philo, char *color)
 	if (!stop(philo->params))
 	{
 		printf(
-			"%s %09zu %d %s\n",
+			"%s %09llu %d %s\n",
 			color,
 			get_current_time() - philo->start_time,
 			philo->id,
@@ -28,9 +28,9 @@ void	print(char *msg, t_philo *philo, char *color)
 	pthread_mutex_unlock(philo->log_mutex);
 }
 
-int	ft_usleep(size_t ms)
+int	ft_usleep(u_int64_t ms)
 {
-	size_t	start_time;
+	u_int64_t	start_time;
 
 	start_time = get_current_time();
 	while ((get_current_time() - start_time) < ms)
@@ -41,7 +41,7 @@ int	ft_usleep(size_t ms)
 	return (0);
 }
 
-size_t	get_current_time(void)
+u_int64_t	get_current_time(void)
 {
 	struct timeval	tv;
 

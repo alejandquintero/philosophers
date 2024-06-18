@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:50:59 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/17 21:50:56 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:54:20 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	drop_left_fork(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->l_fork);
+	pthread_mutex_unlock(philo->left_fork);
 }
 
 void	drop_right_fork(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
 bool	take_left_fork(t_philo *philo)
 {
 	if (stop(philo->params))
 		return (false);
-	pthread_mutex_lock(philo->l_fork);
+	pthread_mutex_lock(philo->left_fork);
 	print("has taken a fork", philo, GREEN);
 	return (true);
 }
@@ -35,7 +35,7 @@ bool	take_right_fork(t_philo *philo)
 {
 	if (stop(philo->params))
 		return (false);
-	pthread_mutex_lock(philo->r_fork);
+	pthread_mutex_lock(philo->right_fork);
 	print("has taken a fork", philo, GREEN);
 	return (true);
 }
@@ -60,8 +60,8 @@ bool	take_forks(t_philo *philo)
 
 void	drop_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->l_fork);
-	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
 bool	eat(t_philo *philo)

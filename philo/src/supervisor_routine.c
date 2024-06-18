@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:52:15 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/17 22:35:15 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:13:06 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	check_meals(t_philo *philo)
 	return (false);
 }
 
-bool	all_the_philosophers_ate(t_philo *philos)
+bool	all_philosophers_ate(t_philo *philos)
 {
 	int	i;
 	int	meals_complete;
@@ -77,7 +77,7 @@ bool	check_dead_philo(t_philo *philo)
 		pthread_mutex_unlock(philo->stop_mutex);
 
 		pthread_mutex_lock(philo->log_mutex);		
-		printf("%s %09zu %d died\n", RED, get_current_time() - philo->start_time, philo->id);
+		printf("%s %09llu %d died\n", RED, get_current_time() - philo->start_time, philo->id);
 		pthread_mutex_unlock(philo->log_mutex);
 
 		return (true);
@@ -85,7 +85,7 @@ bool	check_dead_philo(t_philo *philo)
 	return (false);
 }
 
-bool	a_philosopher_is_dead(t_philo *philos)
+bool	philosopher_dead(t_philo *philos)
 {
 	int	i;
 

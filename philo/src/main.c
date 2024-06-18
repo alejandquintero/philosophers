@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 22:05:38 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:12:22 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 bool	valid_input(char *argv[])
 {
 	if (!is_digit(argv[1]) || ft_stol(argv[1]) <= 0 \
-		|| ft_stol(argv[1]) > INT_MAX)
-		return (printf("Invalid philosophers numbers\n"), false);
+		|| ft_stol(argv[1]) > LONG_MAX)
+		return (printf(INVALID_PHILO_NBRS), false);
 	if (!is_digit(argv[2]) || ft_stol(argv[2]) <= 0 \
-		|| ft_stol(argv[2]) > INT_MAX)
-		return (printf("Invalid time to die\n"), false);
+		|| ft_stol(argv[2]) > LONG_MAX)
+		return (printf(INVALID_TIME_DIE), false);
 	if (!is_digit(argv[3]) || ft_stol(argv[3]) <= 0 \
-		|| ft_stol(argv[3]) > INT_MAX)
-		return (printf("Invalid time to eat\n"), false);
+		|| ft_stol(argv[3]) > LONG_MAX)
+		return (printf(INVALID_TIME_EAT), false);
 	if (!is_digit(argv[4]) || ft_stol(argv[4]) <= 0 \
-		|| ft_stol(argv[4]) > INT_MAX)
-		return (printf("Invalid time to sleep\n"), false);
+		|| ft_stol(argv[4]) > LONG_MAX)
+		return (printf(INVALID_TIME_SLEEP), false);
 	if (argv[5] && (!is_digit(argv[5]) || ft_stol(argv[5]) < 0 \
-		|| ft_stol(argv[5]) > INT_MAX))
-		return (printf("Invalid n times each philosopher must eat\n"), false);
+		|| ft_stol(argv[5]) > LONG_MAX))
+		return (printf(INVALID_MEALS), false);
 	return (true);
 }
 
@@ -44,7 +44,18 @@ bool	get_input(char *argv[], t_params *params)
 	if (argv[5])
 		params->number_of_meals = (int)ft_stol(argv[5]);
 	else
-		params->number_of_meals = -1;
+		params->number_of_meals = NO_MEAL_LIMIT;
+	return (true);
+}
+
+bool	check_input(int argc, char *argv[], t_params *params)
+{
+	if (argc < REQUIRED_ARGUMENTS) 
+		return (printf(WRONG_INPUT), false);
+	if (argc > OPTIONAL_ARGUMENTS)
+		return (printf(WRONG_INPUT), false);
+	if (!get_input(argv, params))
+		return (false);
 	return (true);
 }
 
@@ -53,16 +64,12 @@ int	main(int argc, char *argv[])
 	t_philo		*philos;
 	t_params	params;
 
-	if (argc != REQUIRED_ARGUMENTS && argc != OPTIONAL_ARGUMENTS)
-		return (printf("Invalid arguments\n"), 1);
-	if (!get_input(argv, &params))
-		return (1);
-	else
-	{
-		if (!init(&params, &philos))
-			return (1);
-		init_threads(philos, &params);
-	}
+	if (!check_input(argc, argv, &params))
+		return(ERROR);
+	if (!init_data(&params, &philos))
+		return (printf(SYSTEM_ERROR), ERROR);
+	if (!init_threads(philos, &params))
+		return (printf(SYSTEM_ERROR), ERROR);
 	destroy_and_free(&params, philos);
-	return (0);
+	return (SUCCESS);
 }

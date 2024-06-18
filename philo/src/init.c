@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:32:51 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/10 21:57:55 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:46:45 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,11 @@ bool	init_forks(t_params *params)
 	i = 0;
 	params->forks = malloc(params->number_of_philos * sizeof(pthread_mutex_t));
 	if (!params->forks)
-	{
-		printf("Something was wrong\n");
 		return (false);
-	}
 	while (i < params->number_of_philos)
 	{
 		if (pthread_mutex_init(&params->forks[i], NULL) != 0)
 		{
-			printf("Something was wrong\n");
 			destroy_and_free(params, NULL);
 			return (false);
 		}
@@ -40,19 +36,16 @@ bool	init_mutex_flags(t_params *params)
 {
 	if (pthread_mutex_init(&params->stop_mutex, NULL) != 0)
 	{
-		printf("Something was wrong\n");
 		destroy_and_free(params, NULL);
 		return (false);
 	}
 	if (pthread_mutex_init(&params->log_mutex, NULL) != 0)
 	{
-		printf("Something was wrong\n");
 		destroy_and_free(params, NULL);
 		return (false);
 	}
 	if (pthread_mutex_init(&params->meal_mutex, NULL) != 0)
 	{
-		printf("Something was wrong\n");
 		destroy_and_free(params, NULL);
 		return (false);
 	}
@@ -67,13 +60,13 @@ void	init_philos(t_params *params, t_philo *philos)
 	while (i < params->number_of_philos)
 	{
 		philos[i].id = i + 1;
-		philos[i].is_eating = 0;
+		philos[i].is_eating = false;
 		philos[i].meals_count = 0;
-		philos[i].r_fork = &params->forks[i];
+		philos[i].right_fork = &params->forks[i];
 		if (i == 0)
-			philos[i].l_fork = &params->forks[params->number_of_philos - 1];
+			philos[i].left_fork = &params->forks[params->number_of_philos - 1];
 		else
-			philos[i].l_fork = &params->forks[i - 1];
+			philos[i].left_fork = &params->forks[i - 1];
 		philos[i].start_time = get_current_time();
 		philos[i].last_meal_time = get_current_time();
 		philos[i].stop_mutex = &params->stop_mutex;
@@ -84,7 +77,7 @@ void	init_philos(t_params *params, t_philo *philos)
 	}
 }
 
-bool	init(t_params *params, t_philo **philos)
+bool	init_data(t_params *params, t_philo **philos)
 {
 	*philos = NULL;
 	if (!init_forks(params))
@@ -94,7 +87,6 @@ bool	init(t_params *params, t_philo **philos)
 	*philos = malloc(params->number_of_philos * sizeof(t_philo));
 	if (!*philos)
 	{
-		printf("Error al crear philos\n");
 		destroy_and_free(params, NULL);
 		return (false);
 	}
