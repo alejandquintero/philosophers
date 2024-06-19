@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:52:15 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 21:24:02 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/19 23:01:34 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,23 @@ bool	all_philosophers_ate(t_philo *philos)
 
 bool	check_dead_philo(t_philo *philo)
 {
-	size_t	time_since_last_meal;
-	bool	is_dead;
+	long	last_meal;
+	bool	dead;
 
-	is_dead = false;
+	dead = false;
 	pthread_mutex_lock(philo->meal_mutex);
-	time_since_last_meal = get_current_time() - philo->last_meal_time;
-	if (time_since_last_meal > philo->params->time_to_die && !philo->is_eating)
-		is_dead = true;
+	last_meal = get_time() - philo->last_meal_time;
+	if (last_meal > philo->params->time_to_die && !philo->is_eating)
+		dead = true;
 	pthread_mutex_unlock(philo->meal_mutex);
-	if (is_dead)
-	{	
-		
+	if (dead)
+	{
 		pthread_mutex_lock(philo->stop_mutex);
 		philo->params->stop = true;
 		pthread_mutex_unlock(philo->stop_mutex);
-
-		pthread_mutex_lock(philo->log_mutex);		
-		printf("%s %09lu %d died\n", RED, get_current_time() - philo->start_time, philo->id);
+		pthread_mutex_lock(philo->log_mutex);
+		printf("%09lu %d died\n", get_time() - philo->start_time, philo->id);
 		pthread_mutex_unlock(philo->log_mutex);
-
 		return (true);
 	}
 	return (false);

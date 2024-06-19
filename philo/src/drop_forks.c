@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   drop_forks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 21:39:17 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/19 21:57:27 by aquinter         ###   ########.fr       */
+/*   Created: 2024/06/19 22:17:33 by aquinter          #+#    #+#             */
+/*   Updated: 2024/06/19 23:02:43 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-int	main(int argc, char *argv[])
+void	drop_left_fork(t_philo *philo)
 {
-	t_philo		*philos;
-	t_params	params;
+	pthread_mutex_unlock(philo->left_fork);
+}
 
-	if (!check_input(argc, argv, &params))
-		return (ERROR);
-	if (!init_data(&params, &philos))
-		return (printf(SYSTEM_ERROR), ERROR);
-	if (!init_threads(philos, &params))
-		return (printf(SYSTEM_ERROR), ERROR);
-	destroy_and_free(&params, philos);
-	return (SUCCESS);
+void	drop_right_fork(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	drop_forks(t_philo *philo)
+{
+	if (philo->id % 2 != 0)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
 }

@@ -6,55 +6,51 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 21:53:26 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 21:23:43 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/19 23:00:46 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-void	print(char *msg, t_philo *philo, char *color)
+void	print(char *msg, t_philo *philo)
 {
+	long	time;
+
 	pthread_mutex_lock(philo->log_mutex);
+	time = get_time() - philo->start_time;
 	if (!stop(philo->params))
 	{
-		printf(
-			"%s %09lu %d %s\n",
-			color,
-			get_current_time() - philo->start_time,
-			philo->id,
-			msg
-			);
+		printf("%09lu %d %s\n", time, philo->id, msg);
 	}
 	pthread_mutex_unlock(philo->log_mutex);
 }
 
-int	ft_usleep(u_int64_t ms)
+void	ft_usleep(long ms)
 {
-	u_int64_t	start_time;
+	long	start_time;
 
-	start_time = get_current_time();
-	while ((get_current_time() - start_time) < ms)
+	start_time = get_time();
+	while ((get_time() - start_time) < ms)
 	{
 		if (usleep(50) == -1)
-			printf("usleep error!\n");
+			printf(SYSTEM_ERROR);
 	}
-	return (0);
 }
 
-u_int64_t	get_current_time(void)
+long	get_time(void)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
-		printf("gettimeofday error!\n");
+		printf(SYSTEM_ERROR);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long	ft_stol(const char *str)
+long long	ft_stol(const char *str)
 {
-	int		i;
-	int		sign;
-	long	num;
+	int			i;
+	int			sign;
+	long long	num;
 
 	i = 0;
 	num = 0;

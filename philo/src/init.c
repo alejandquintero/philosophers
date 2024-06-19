@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:32:51 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/18 20:46:45 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/19 22:33:34 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	init_philos(t_params *params, t_philo *philos)
 			philos[i].left_fork = &params->forks[params->number_of_philos - 1];
 		else
 			philos[i].left_fork = &params->forks[i - 1];
-		philos[i].start_time = get_current_time();
-		philos[i].last_meal_time = get_current_time();
+		philos[i].start_time = get_time();
+		philos[i].last_meal_time = get_time();
 		philos[i].stop_mutex = &params->stop_mutex;
 		philos[i].log_mutex = &params->log_mutex;
 		philos[i].meal_mutex = &params->meal_mutex;

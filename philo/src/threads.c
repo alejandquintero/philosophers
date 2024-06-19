@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 20:32:39 by aquinter          #+#    #+#             */
-/*   Updated: 2024/06/19 00:10:36 by aquinter         ###   ########.fr       */
+/*   Updated: 2024/06/19 22:59:45 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void	*supervisor_routine(void *p)
 {
 	t_philo	*philos;
+	int		number_of_meals;
 
 	philos = (t_philo *)p;
+	number_of_meals = philos[0].params->number_of_meals;
 	while (true)
 	{
 		if (philosopher_dead(p))
 			return (NULL);
-		if (philos[0].params->number_of_meals != NO_MEAL_LIMIT)
+		if (number_of_meals != NO_MEAL_LIMIT)
 		{
 			if (all_philosophers_ate(philos))
 				return (NULL);
@@ -29,18 +31,6 @@ void	*supervisor_routine(void *p)
 		ft_usleep(.5);
 	}
 	return (NULL);
-}
-
-bool	loop(t_philo *philo)
-{
-	pthread_mutex_lock(philo->stop_mutex);
-	if (philo->params->stop)
-	{
-		pthread_mutex_unlock(philo->stop_mutex);
-		return (false);
-	}
-	pthread_mutex_unlock(philo->stop_mutex);
-	return (true);
 }
 
 void	*philo_routine(void *p)
@@ -53,11 +43,11 @@ void	*philo_routine(void *p)
 	while (loop(philo))
 	{
 		if (!eat(philo))
-			break;
+			return (NULL);
 		if (!nap(philo))
-			break;
+			return (NULL);
 		if (!think(philo))
-			break;
+			return (NULL);
 	}
 	return (NULL);
 }
